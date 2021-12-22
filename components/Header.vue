@@ -7,28 +7,11 @@
         alt="Logo Cai"
       />
       <a class="navbar-brand" href="#">Prenotazioni bivacco</a>
-      <button
-        v-if="$store.state.isLoggedIn"
-        class="btn btn-secondary"
-        @click="logout"
-      >
-        <LogoutIcon />
-      </button>
+      <Logout v-if="$store.state.isLoggedIn"/>
     </div>
   </nav>
 </template>
 
-<script>
-export default {
-  methods: {
-    logout() {
-      this.$cookies.remove('token')
-      this.$store.commit('setLoggedIn', false)
-      this.$router.push('/')
-    },
-  },
-}
-</script>
 
 
 <style lang="scss">
