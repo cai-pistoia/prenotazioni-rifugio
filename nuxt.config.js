@@ -38,16 +38,26 @@ export default {
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
   ],
-
+  ssr: false,
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/dotenv',
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
-
+  axios: {
+    baseURL: 'http://localhost:8000',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-type': 'application/json',
+    },
+  },
+  router: {
+    middleware: ['onload'],
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }

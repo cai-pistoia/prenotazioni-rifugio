@@ -1,16 +1,16 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <form>
+      <form @submit.prevent="login">
         <h3>Login</h3>
         <div class="mb-3">
-          <label for="email" class="form-label">Indirizzo Email</label>
+          <label for="mail" class="form-label">Indirizzo Email</label>
           <input
             type="email"
             class="form-control"
-            id="email"
+            id="mail"
             aria-describedby="emailHelp"
-            v-model="email"
+            name="mail"
             required
           />
           <div id="emailHelp" class="form-text">
@@ -23,14 +23,11 @@
             type="password"
             class="form-control"
             id="password"
-            v-model="password"
+            name="password"
             required
           />
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="check" required />
-          <label class="form-check-label" for="check" >Accetto la privacy</label>
-        </div>
+
         <button type="submit" class="btn btn-primary">Login</button>
       </form>
     </div>
@@ -38,12 +35,28 @@
 </template>
 
 <script>
+import createFormData from '../utils/formData'
 export default {
-  data() {
-    return {
-      email: null,
-      password: null,
-    }
+  methods: {
+    login(event) {
+      const form = event.target
+      const data = createFormData(form)
+      this.$axios
+        .$post('/login', data)
+        .then((data) => {
+          this.$cookies.set('token', data.session.access_token, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+            secure: true,
+          })
+          this.$store.commit("setLoggedIn", true);
+          this.$router.push("/booking");
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('credenziali errate')
+        })
+    },
   },
 }
 </script>
