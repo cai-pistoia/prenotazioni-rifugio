@@ -3,8 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          le tue Prenotazioni
-          {{ message }}
+          <Availability :slots="slots" />
         </div>
       </div>
     </div>
@@ -13,13 +12,23 @@
 
 
 <script>
-
 export default {
-  middleware:['auth'],
-  computed: {
-    message() {
-      return process.env.TEST_VARIABLE
-    },
+  middleware: ['auth'],
+  data() {
+    return {
+      slots: null,
+    }
+  },
+  created() {
+    this.$axios
+      .get('/availability')
+      .then((data) => {
+        this.slots = data.data
+      })
+      .catch((error) => {
+        console.log(error)
+        alert('errore di sistema')
+      })
   },
 }
 </script>
