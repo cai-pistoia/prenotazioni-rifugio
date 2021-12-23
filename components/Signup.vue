@@ -1,16 +1,16 @@
 <template>
   <div class="card">
     <div class="card-body">
-      <form>
+      <form @submit.prevent="signup">
         <h3>Iscriviti</h3>
         <div class="mb-3">
-          <label for="email" class="form-label">Indirizzo Email</label>
+          <label for="mail" class="form-label">Indirizzo Email</label>
           <input
             type="email"
             class="form-control"
-            id="email"
+            id="mail"
             aria-describedby="emailHelp"
-            v-model="email"
+            name="mail"
             required
           />
           <div id="emailHelp" class="form-text">
@@ -23,7 +23,7 @@
             type="text"
             class="form-control"
             id="name"
-            v-model="name"
+            name="name"
             required
           />
         </div>
@@ -33,7 +33,7 @@
             type="password"
             class="form-control"
             id="password"
-            v-model="password"
+            name="password"
             required
           />
         </div>
@@ -48,13 +48,21 @@
 </template>
 
 <script>
+import createFormData from '../utils/formData'
 export default {
-  data() {
-    return {
-      email: null,
-      name: null,
-      password: null,
-    }
+  methods: {
+    signup(event) {
+      const form = event.target
+      const data = createFormData(form)
+      this.$axios.post('/signup', data)
+      .then((data)=>{
+        this.$router.push('/wait')
+      })
+      .catch((error) =>{
+        console.log(error)
+        alert('errore di piattaforma')
+      })
+    },
   },
 }
 </script>

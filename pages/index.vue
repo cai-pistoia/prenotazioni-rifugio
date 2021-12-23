@@ -19,6 +19,11 @@ import '../components/Login.vue'
 import '../components/Signup.vue'
 export default {
   components: ['Login', 'Signup'],
+  created(){
+    if(this.$cookies.get('token')){
+      this.$router.push('/booking')
+    }
+  }
 }
 </script>
 
